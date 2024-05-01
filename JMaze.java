@@ -39,15 +39,15 @@ public class JMaze {
     }
 
     private static void printAStarPath(Map m, Vec2 start, Vec2 goal) {
-        List<Vec2> astar_path = AStar.determinePath(m, start, goal);
-        System.out.println("Path from AStar (length: " + astar_path.size() + "):");
-        System.out.println(astar_path);
+        List<Vec2> path = AStar.determinePath(m, start, goal);
+        System.out.println("Path from AStar (length: " + path.size() + "):");
+        System.out.println(path);
     }
 
     private static void printBFSPath(Map m, Vec2 start, Vec2 goal) {
-        List<Vec2> bfs_path = BFS.determinePath(m, start, goal);
-        System.out.println("Path from BFS (length: " + bfs_path.size() + "):");
-        System.out.println(bfs_path);
+        List<Vec2> path = BFS.determinePath(m, start, goal);
+        System.out.println("Path from BFS (length: " + path.size() + "):");
+        System.out.println(path);
     }
 
     private static Map generateDemoMap() {
