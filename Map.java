@@ -3,22 +3,20 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Map implements Graph {
-    final private int width;
-    final private int height;
+    final private MapDimensions dim;
 
     private HashMap<Vec2, Boolean> map = new HashMap<>();
 
-    public Map(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public Map(MapDimensions dim) {
+        this.dim = dim;
     }
 
     public int getWidth() {
-        return width;
+        return dim.getWidth();
     }
 
     public int getHeight() {
-        return height;
+        return dim.getHeight();
     }
 
     public void setWall(Vec2 p) {
@@ -59,7 +57,7 @@ public class Map implements Graph {
 
     @Override
     public boolean inDimensions(Vec2 p) {
-        return p.getX() >= 0 && p.getX() < width && p.getY() >= 0 && p.getY() < height;
+        return p.getX() >= 0 && p.getX() < dim.getWidth() && p.getY() >= 0 && p.getY() < dim.getHeight();
     }
 
     /**
@@ -76,16 +74,16 @@ public class Map implements Graph {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int y = 0; y < dim.getHeight(); y++) {
+            for (int x = 0; x < dim.getWidth(); x++) {
                 Vec2 p = new Vec2(x, y);
-                if (x == 0 || x == width - 1 || y == 0 || y == height - 1) {
+                if (x == 0 || x == dim.getWidth() - 1 || y == 0 || y == dim.getHeight() - 1) {
                     sb.append("#"); // Border
                 } else {
                     sb.append(getTile(p));
                 }
             }
-            if (y < height - 1) {
+            if (y < dim.getHeight() - 1) {
                 sb.append("\n");
             }
         }

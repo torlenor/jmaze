@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
 import java.util.List;
-import java.io.FileReader;
 
 public class JMaze {
     public static void main(String[] args) {
@@ -15,7 +13,7 @@ public class JMaze {
             goal = new Vec2(8, 8);
         } else {
             try {
-                m = readMapFromFile(args[0]);
+                m = MapReader.readMapFromFile(args[0]);
             } catch (Exception e) {
                 System.err.println("Could not read map from file: " + e.getMessage());
                 return;
@@ -55,7 +53,7 @@ public class JMaze {
     private static Map generateDemoMap() {
         int width = 24;
         int height = 16;
-        Map m = new Map(width, height);
+        Map m = new Map(new MapDimensions(width, height));
 
         // Add a wall to the map
         for (int i = 0; i < height; i++) {
@@ -68,40 +66,6 @@ public class JMaze {
         m.removeWall(new Vec2(width / 2, 5));
         m.removeWall(new Vec2(width / 2, 6));
         m.removeWall(new Vec2(width / 2 + 1, 6));
-
-        return m;
-    }
-
-    private static Map readMapFromFile(String filename) throws Exception {
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
-
-        String dimensions = reader.readLine();
-        if (dimensions == null) {
-            reader.close();
-            throw new Exception("File is empty.");
-        }
-        String[] dimensionsArr = dimensions.split("x");
-        if (dimensionsArr.length != 2) {
-            reader.close();
-            throw new Exception("Invalid dimensions format." +
-                    " Must be <width>x<height> in the first line of the map file.");
-        }
-        int width = Integer.parseInt(dimensionsArr[0]);
-        int height = Integer.parseInt(dimensionsArr[1]);
-
-        Map m = new Map(width, height);
-        String line;
-        int row = 0;
-        while ((line = reader.readLine()) != null) {
-            for (int col = 0; col < line.length(); col++) {
-                if (line.charAt(col) == 'x') {
-                    m.setWall(new Vec2(col, row));
-                }
-            }
-            row++;
-        }
-
-        reader.close();
 
         return m;
     }
