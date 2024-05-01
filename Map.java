@@ -73,17 +73,24 @@ public class Map implements Graph {
     }
 
     public String toString() {
+        final int borderLeft = 0;
+        final int borderRight = dim.getWidth() + 1;
+        final int borderTop = 0;
+        final int borderBottom = dim.getHeight() + 1;
+
         StringBuilder sb = new StringBuilder();
-        for (int y = 0; y < dim.getHeight(); y++) {
-            for (int x = 0; x < dim.getWidth(); x++) {
-                Vec2 p = new Vec2(x, y);
-                if (x == 0 || x == dim.getWidth() - 1 || y == 0 || y == dim.getHeight() - 1) {
+        for (int y = 0; y < borderBottom + 1; y++) {
+            for (int x = 0; x < borderRight + 1; x++) {
+                if (x == borderLeft || x == borderRight || y == borderTop || y == borderBottom) {
                     sb.append("#"); // Border
                 } else {
+                    int mapX = x - 1;
+                    int mapY = y - 1;
+                    Vec2 p = new Vec2(mapX, mapY);
                     sb.append(getTile(p));
                 }
             }
-            if (y < dim.getHeight() - 1) {
+            if (y < borderBottom) {
                 sb.append("\n");
             }
         }
