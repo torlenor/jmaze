@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.util.List;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class JMaze {
     public static void main(String[] args) {
@@ -18,7 +17,7 @@ public class JMaze {
             try {
                 m = readMapFromFile(args[0]);
             } catch (Exception e) {
-                System.out.println("Could not read map from file: " + e.getMessage());
+                System.err.println("Could not read map from file: " + e.getMessage());
                 return;
             }
             start = new Vec2(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
@@ -74,36 +73,36 @@ public class JMaze {
     }
 
     private static Map readMapFromFile(String filename) throws Exception {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
 
-            String dimensions = reader.readLine();
-            if (dimensions == null) {
-                reader.close();
-                throw new Exception("File is empty.");
-            }
-            String[] dimensionsArr = dimensions.split("x");
-            int width = Integer.parseInt(dimensionsArr[0]);
-            int height = Integer.parseInt(dimensionsArr[1]);
-
-            Map m = new Map(width, height);
-            String line;
-            int row = 0;
-            while ((line = reader.readLine()) != null) {
-                for (int col = 0; col < line.length(); col++) {
-                    if (line.charAt(col) == 'x') {
-                        m.setWall(new Vec2(col, row));
-                    }
-                }
-                row++;
-            }
-
+        String dimensions = reader.readLine();
+        if (dimensions == null) {
             reader.close();
-
-            return m;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new Exception("File is empty.");
         }
+        String[] dimensionsArr = dimensions.split("x");
+        if (dimensionsArr.length != 2) {
+            reader.close();
+            throw new Exception("Invalid dimensions format." +
+                    " Must be <width>x<height> in the first line of the map file.");
+        }
+        int width = Integer.parseInt(dimensionsArr[0]);
+        int height = Integer.parseInt(dimensionsArr[1]);
+
+        Map m = new Map(width, height);
+        String line;
+        int row = 0;
+        while ((line = reader.readLine()) != null) {
+            for (int col = 0; col < line.length(); col++) {
+                if (line.charAt(col) == 'x') {
+                    m.setWall(new Vec2(col, row));
+                }
+            }
+            row++;
+        }
+
+        reader.close();
+
+        return m;
     }
 }
